@@ -43,14 +43,6 @@ class PokemonDetails : Fragment() {
         pokemon_height=itemView.findViewById(R.id.height) as TextView
         pokemon_weight=itemView.findViewById(R.id.weight) as TextView
 
-        recycler_next_evolution=itemView.findViewById(R.id.recycler_next)as RecyclerView
-        recycler_next_evolution.setHasFixedSize(true)
-        recycler_next_evolution.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
-
-        recycler_prev_evolution=itemView.findViewById(R.id.recycler_prev)as RecyclerView
-        recycler_prev_evolution.setHasFixedSize(true)
-        recycler_prev_evolution.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
-
         recycler_type=itemView.findViewById(R.id.recycler_type)as RecyclerView
         recycler_type.setHasFixedSize(true)
         recycler_type.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
@@ -60,7 +52,17 @@ class PokemonDetails : Fragment() {
         recycler_weaknesses.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
 
 
+
+        recycler_next_evolution=itemView.findViewById(R.id.recycler_next)as RecyclerView
+        recycler_next_evolution.setHasFixedSize(true)
+        recycler_next_evolution.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
+
+        recycler_prev_evolution=itemView.findViewById(R.id.recycler_prev)as RecyclerView
+        recycler_prev_evolution.setHasFixedSize(true)
+        recycler_prev_evolution.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
+
         setDetailsPokemon(pokemon)
+
         return itemView
     }
 

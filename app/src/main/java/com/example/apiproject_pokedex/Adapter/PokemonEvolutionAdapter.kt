@@ -30,7 +30,7 @@ RecyclerView.Adapter<PokemonEvolutionAdapter.MyViewHolder>()
                 //Toast.makeText(context,"Clicked", Toast.LENGTH_SHORT).show()
                 LocalBroadcastManager.getInstance(context)
                     .sendBroadcast(Intent(Common.KEY_NUM_EVOLUTION).putExtra("num",evolutionList[adapterPosition].num))
-
+                //println("here")
             }
         }
     }

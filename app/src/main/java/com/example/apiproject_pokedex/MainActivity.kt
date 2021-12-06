@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 //Replace Fragment
                 val detailFragment:PokemonDetails=PokemonDetails.getInstance()
                 val num=intent.getStringExtra("num")
-                //println(num)
+                println(num)
                 val bundle=Bundle()
                 bundle.putString("num",num)
                 detailFragment.arguments=bundle
@@ -55,24 +55,28 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(p0: Context?, intent: Intent?) {
             if(intent!!.action!!.toString()== Common.KEY_NUM_EVOLUTION)
             {
+
+                //supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                //supportActionBar!!.setDisplayShowHomeEnabled(true)
+
                 //Replace Fragment
                 val detailFragment:PokemonDetails=PokemonDetails.getInstance()
-                val num=intent.getStringExtra("num")
-                //println(num)
+                val num=intent!!.getStringExtra("num")
+                println(num)
                 val bundle=Bundle()
                 bundle.putString("num",num)
                 detailFragment.arguments=bundle
 
-                val fragmentTransaction=supportFragmentManager.beginTransaction()
-                fragmentTransaction.remove(detailFragment)//Remove current
-                fragmentTransaction.replace(R.id.list_pokemon_fragment,detailFragment)
-                fragmentTransaction.addToBackStack("detail")
-                fragmentTransaction.commit()
+                val fragmentTransaction=supportFragmentManager?.beginTransaction()
+                fragmentTransaction?.remove(detailFragment)//Remove current
+                fragmentTransaction?.replace(R.id.list_pokemon_fragment,detailFragment)
+                fragmentTransaction?.addToBackStack("detail")
+                fragmentTransaction?.commit()
 
                 //Set Pokemon Name for Toolbar
                 val pokemon=Common.findPokemonByNum(num)
                 binding.toolbar.title=pokemon!!.name
-            }
+           }
         }
     }
 
