@@ -16,8 +16,7 @@ import com.example.apiproject_pokedex.Model.Pokemon
 import com.example.apiproject_pokedex.R
 import com.example.apiproject_pokedex.Interface.IItemClickListener
 
-class PokemonListAdapter (internal var context: Context,
-                          internal var pokemonList:List<Pokemon>): RecyclerView.Adapter<PokemonListAdapter.MyViewHolder>(){
+class PokemonListAdapter (internal var context: Context,internal var pokemonList:List<Pokemon>): RecyclerView.Adapter<PokemonListAdapter.MyViewHolder>(){
 
 
     inner class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){

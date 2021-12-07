@@ -9,13 +9,13 @@ import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apiproject_pokedex.Common.Common
+import com.example.apiproject_pokedex.Common.Common.pokemonList
 import com.example.apiproject_pokedex.Model.Evolution
 import com.example.apiproject_pokedex.R
 import com.robertlevonyan.views.chip.Chip
 
-class PokemonEvolutionAdapter(internal var context: Context,var evolutionList:List<Evolution>):
-RecyclerView.Adapter<PokemonEvolutionAdapter.MyViewHolder>()
-{
+class PokemonEvolutionAdapter(internal var context: Context,var evolutionList:List<Evolution>):RecyclerView.Adapter<PokemonEvolutionAdapter.MyViewHolder>(){
+
     init{
         if(evolutionList==null)
             evolutionList=ArrayList()
@@ -27,15 +27,16 @@ RecyclerView.Adapter<PokemonEvolutionAdapter.MyViewHolder>()
         init{
             chip=itemView.findViewById(R.id.chip) as Chip
             chip.setOnChipClickListener {
-                //Toast.makeText(context,"Clicked", Toast.LENGTH_SHORT).show()
+
+                //Toast.makeText(context,"Clicked at Pokemon: "+evolutionList[adapterPosition].name,Toast.LENGTH_SHORT).show()
                 LocalBroadcastManager.getInstance(context)
                     .sendBroadcast(Intent(Common.KEY_NUM_EVOLUTION).putExtra("num",evolutionList[adapterPosition].num))
-                //println("here")
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        //println("evochip")
         val itemView= LayoutInflater.from(context).inflate(R.layout.chip_item,parent,false)
         return MyViewHolder(itemView)
     }
