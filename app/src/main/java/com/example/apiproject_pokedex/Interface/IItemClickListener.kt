@@ -1,4 +1,5 @@
 package com.example.apiproject_pokedex.Interface
+
 import android.view.View;
 
 public interface IItemClickListener {

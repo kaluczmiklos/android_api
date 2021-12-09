@@ -7,14 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
-import android.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apiproject_pokedex.Adapter.PokemonListAdapter
 import com.example.apiproject_pokedex.Common.Common
-import com.example.apiproject_pokedex.Common.Common.pokemonList
-import com.example.apiproject_pokedex.Common.ItemOffsetDecoration
 import com.example.apiproject_pokedex.Model.Pokemon
 import com.example.apiproject_pokedex.Retrofit.IPokemonList
 import com.example.apiproject_pokedex.Retrofit.RetrofitClient
@@ -26,22 +22,22 @@ import io.reactivex.schedulers.Schedulers
 
 class PokemonList : Fragment() {
 
-    internal var compositeDisposable=CompositeDisposable()
-    internal var iPokemonList:IPokemonList
+    internal var compositeDisposable = CompositeDisposable()
+    internal var iPokemonList: IPokemonList
 
-    internal lateinit var recycler_view:RecyclerView
+    internal lateinit var recycler_view: RecyclerView
 
-    internal lateinit var adapter:PokemonListAdapter
-    internal lateinit var search_adapter:PokemonListAdapter
-    internal lateinit var last_suggest:MutableList<String>
-
-
-    internal lateinit var search_bar:MaterialSearchBar
+    internal lateinit var adapter: PokemonListAdapter
+    internal lateinit var search_adapter: PokemonListAdapter
+    internal lateinit var last_suggest: MutableList<String>
 
 
-    init{
-        val retrofit=RetrofitClient.instance
-        iPokemonList=retrofit.create(IPokemonList::class.java)
+    internal lateinit var search_bar: MaterialSearchBar
+
+
+    init {
+        val retrofit = RetrofitClient.instance
+        iPokemonList = retrofit.create(IPokemonList::class.java)
     }
 
     override fun onCreateView(
@@ -49,38 +45,36 @@ class PokemonList : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val itemView= inflater.inflate(R.layout.fragment_pokemon_list, container, false)
+        val itemView = inflater.inflate(R.layout.fragment_pokemon_list, container, false)
 
-        recycler_view=itemView.findViewById(R.id.pokemon_recyclerview) as RecyclerView
+        recycler_view = itemView.findViewById(R.id.pokemon_recyclerview) as RecyclerView
         recycler_view.setHasFixedSize(true)
-        recycler_view.layoutManager=GridLayoutManager(activity,3)
-        //val itemDecoration= ItemOffsetDecoration(requireActivity(),R.dimen.spacing)
-        //recycler_view.addItemDecoration(itemDecoration)
+        recycler_view.layoutManager = GridLayoutManager(activity, 3)
 
         //Setup Search Bar
-        search_bar=itemView.findViewById(R.id.search_bar) as MaterialSearchBar
+        search_bar = itemView.findViewById(R.id.search_bar) as MaterialSearchBar
 
-        last_suggest=arrayListOf()
+        last_suggest = arrayListOf()
         search_bar.setHint("Enter Pokemon name: ")
         search_bar.setCardViewElevation(10)
-        search_bar.addTextChangeListener(object: TextWatcher {
+        search_bar.addTextChangeListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val suggest=ArrayList<String>()
-                for(search in last_suggest)
-                    if(search.toLowerCase().contains(search_bar.text.toLowerCase()))
+                val suggest = ArrayList<String>()
+                for (search in last_suggest)
+                    if (search.lowercase().contains(search_bar.text.lowercase()))
                         suggest.add(search)
-                search_bar.lastSuggestions=suggest
+                search_bar.lastSuggestions = suggest
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        search_bar.setOnSearchActionListener(object:MaterialSearchBar.OnSearchActionListener{
+        search_bar.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
             override fun onSearchStateChanged(enabled: Boolean) {
-                if(!enabled)
-                    recycler_view.adapter=adapter
+                if (!enabled)
+                    recycler_view.adapter = adapter
             }
 
             override fun onSearchConfirmed(text: CharSequence?) {
@@ -95,34 +89,34 @@ class PokemonList : Fragment() {
         return itemView
     }
 
-    private fun startSearch(text:String) {
+    private fun startSearch(text: String) {
         if (Common.pokemonList.size > 0) {
-            val result=ArrayList<Pokemon>()
+            val result = ArrayList<Pokemon>()
             for (pokemon in Common.pokemonList)
-                if (pokemon.name!!.toLowerCase().contains(text.toLowerCase()))
+                if (pokemon.name!!.lowercase().contains(text.lowercase()))
                     result.add(pokemon)
-            search_adapter=PokemonListAdapter(requireActivity(),result)
-            recycler_view.adapter=search_adapter
+            search_adapter = PokemonListAdapter(requireActivity(), result)
+            recycler_view.adapter = search_adapter
 
         }
     }
 
     private fun fetchData() {
-       compositeDisposable.add(iPokemonList.listPokemon
-           .subscribeOn(Schedulers.io())
-           .observeOn(AndroidSchedulers.mainThread())
-           .subscribe{pokemonDex ->
-                Common.pokemonList=pokemonDex.pokemon!!
-               adapter = PokemonListAdapter(requireActivity(),Common.pokemonList)
+        compositeDisposable.add(iPokemonList.listPokemon
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { pokemonDex ->
+                Common.pokemonList = pokemonDex.pokemon!!
+                adapter = PokemonListAdapter(requireActivity(), Common.pokemonList)
 
-               recycler_view.adapter=adapter
+                recycler_view.adapter = adapter
 
-               last_suggest.clear()
-                for(pokemon in Common.pokemonList)
+                last_suggest.clear()
+                for (pokemon in Common.pokemonList)
                     last_suggest.add(pokemon.name!!)
-               search_bar.visibility=View.VISIBLE
-               search_bar.lastSuggestions=last_suggest
-               }
+                search_bar.visibility = View.VISIBLE
+                search_bar.lastSuggestions = last_suggest
+            }
         );
     }
 

@@ -7,5 +7,5 @@ import io.reactivex.Observable
 
 interface IPokemonList {
     @get:GET("pokedex.json")
-    val listPokemon:Observable<Pokedex>
+    val listPokemon: Observable<Pokedex>
 }
