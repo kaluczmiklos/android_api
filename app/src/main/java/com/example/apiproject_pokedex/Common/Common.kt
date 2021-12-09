@@ -6,7 +6,7 @@ import com.example.apiproject_pokedex.Model.Pokemon
 
 object Common {
     fun findPokemonByNum(num: String?): Pokemon? {
-        for (pokemon in Common.pokemonList)
+        for (pokemon in pokemonList)
             if (pokemon.num.equals(num))
                 return pokemon
         return null

@@ -31,7 +31,6 @@ class PokemonList : Fragment() {
     internal lateinit var search_adapter: PokemonListAdapter
     internal lateinit var last_suggest: MutableList<String>
 
-
     internal lateinit var search_bar: MaterialSearchBar
 
 
@@ -51,7 +50,7 @@ class PokemonList : Fragment() {
         recycler_view.setHasFixedSize(true)
         recycler_view.layoutManager = GridLayoutManager(activity, 3)
 
-        //Setup Search Bar
+        //Setup search bar
         search_bar = itemView.findViewById(R.id.search_bar) as MaterialSearchBar
 
         last_suggest = arrayListOf()
@@ -117,7 +116,7 @@ class PokemonList : Fragment() {
                 search_bar.visibility = View.VISIBLE
                 search_bar.lastSuggestions = last_suggest
             }
-        );
+        )
     }
 
 }

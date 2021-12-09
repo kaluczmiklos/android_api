@@ -45,26 +45,18 @@ class PokemonDetails : Fragment() {
         pokemon_weight = itemView.findViewById(R.id.weight) as TextView
 
         recycler_type = itemView.findViewById(R.id.recycler_type) as RecyclerView
-        recycler_type.setHasFixedSize(true)
-        recycler_type.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        setRecycler(recycler_type)
 
         recycler_weaknesses = itemView.findViewById(R.id.recycler_weaknesses) as RecyclerView
-        recycler_weaknesses.setHasFixedSize(true)
-        recycler_weaknesses.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        setRecycler(recycler_weaknesses)
 
         recycler_next_evolution =
             itemView.findViewById(R.id.recycler_next_evolution) as RecyclerView
-        recycler_next_evolution.setHasFixedSize(true)
-        recycler_next_evolution.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        setRecycler(recycler_next_evolution)
 
         recycler_prev_evolution =
             itemView.findViewById(R.id.recycler_prev_evolution) as RecyclerView
-        recycler_prev_evolution.setHasFixedSize(true)
-        recycler_prev_evolution.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        setRecycler(recycler_prev_evolution)
 
         setDetailsPokemon(pokemon)
 
@@ -72,8 +64,8 @@ class PokemonDetails : Fragment() {
     }
 
     fun setDetailsPokemon(pokemon: Pokemon?) {
-        //Load image
 
+        //Load image
         Glide.with(requireActivity()).load(pokemon!!.img).into(pokemon_img)
         pokemon_name.text = pokemon.name
         pokemon_height.text = "Height: " + pokemon.height
@@ -85,22 +77,26 @@ class PokemonDetails : Fragment() {
         val weaknessesAdapter = PokemonTypeAdapter(requireActivity(), pokemon.weaknesses!!)
         recycler_weaknesses.adapter = weaknessesAdapter
 
-        if (pokemon.prev_evolution != null) {
-            val prevEvolution = PokemonEvolutionAdapter(requireActivity(), pokemon.prev_evolution!!)
-            recycler_prev_evolution.adapter = prevEvolution
-        } else {
-            val nullList = listOf<Evolution>()
-            val prevEvolution = PokemonEvolutionAdapter(requireActivity(), nullList)
-            recycler_prev_evolution.adapter = prevEvolution
-        }
+        recycler_prev_evolution.adapter = evolutionSetter(pokemon.prev_evolution)
 
-        if (pokemon.next_evolution != null) {
-            val nextEvolution = PokemonEvolutionAdapter(requireActivity(), pokemon.next_evolution!!)
-            recycler_next_evolution.adapter = nextEvolution
+        recycler_next_evolution.adapter = evolutionSetter(pokemon.next_evolution)
+
+    }
+
+    fun setRecycler(rv: RecyclerView) {
+        rv.setHasFixedSize(true)
+        rv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+    }
+
+
+    fun evolutionSetter(evoList: List<Evolution>?): PokemonEvolutionAdapter {
+        if (evoList != null) {
+            val npEvolution = PokemonEvolutionAdapter(requireActivity(), evoList)
+            return npEvolution
         } else {
             val nullList = listOf<Evolution>()
-            val nextEvolution = PokemonEvolutionAdapter(requireActivity(), nullList)
-            recycler_next_evolution.adapter = nextEvolution
+            val nullEvolution = PokemonEvolutionAdapter(requireActivity(), nullList)
+            return nullEvolution
         }
     }
 

@@ -43,17 +43,17 @@ class PokemonEvolutionAdapter(internal var context: Context, var evolutionList: 
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.chip.chipText = evolutionList!![position].name
+        holder.chip.chipText = evolutionList[position].name
         holder.chip.changeBackgroundColor(
             Common.getColorByType(
                 Common.findPokemonByNum(
-                    evolutionList!![position].num!!
+                    evolutionList[position].num!!
                 )!!.type!![0]
             )
         )
     }
 
     override fun getItemCount(): Int {
-        return evolutionList!!.size
+        return evolutionList.size
     }
 }
